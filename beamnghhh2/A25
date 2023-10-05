@@ -1,0 +1,88 @@
+local Spawner = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Doors%20Entity%20Spawner/Source.lua"))()
+-- Create entity
+local entityTable = Spawner.createEntity({
+    CustomName = "A-25", -- Custom name of your entity
+    Model = "rbxassetid://12430177067", -- Can be GitHub file or rbxassetid
+    Speed = 100, -- Percentage, 100 = default Rush speed
+    DelayTime = 4, -- Time before starting cycles (seconds)
+    HeightOffset = 0,
+    CanKill = true,
+    KillRange = 50,
+    BackwardsMovement = false,
+    BreakLights = false,
+    FlickerLights = {
+        false, -- Enabled/Disabled
+        3, -- Time (seconds)
+    },
+    Cycles = {
+        Min = 1,
+        Max = 2,
+        WaitTime = 1,
+    },
+    CamShake = {
+        true, -- Enabled/Disabled
+        {2.5, 20, 0.1, 1}, -- Shake values (don't change if you don't know)
+        100, -- Shake start distance (from Entity to you)
+    },
+    Jumpscare = {
+        true, -- Enabled/Disabled
+        {
+            Image1 = "rbxassetid://11710147805", -- Image1 url
+            Image2 = "rbxassetid://11710144220", -- Image2 url
+            Shake = true,
+            Sound1 = {
+                4903742660, -- SoundId
+                { Volume = 10 }, -- Sound properties
+            },
+            Sound2 = {
+                3537873683, -- SoundId
+                { Volume = 4.5 }, -- Sound properties
+            },
+            Flashing = {
+                true, -- Enabled/Disabled
+                Color3.fromRGB(0, 255, 255), -- Color
+            },
+            Tease = {
+                true, -- Enabled/Disabled
+                Min = 2,
+                Max = 2,
+            },
+        },
+    },
+    CustomDialog = {"You died to A-25..", "It is a slow entity.", "When you hear it approaching. Hide!"}, -- Custom death message
+})
+ 
+ 
+-----[[  Debug -=- Advanced  ]]-----
+entityTable.Debug.OnEntitySpawned = function()
+    print("Entity has spawned:", entityTable)
+end
+ 
+entityTable.Debug.OnEntityDespawned = function()
+    print("Entity has despawned:", entityTable)
+end
+ 
+entityTable.Debug.OnEntityStartMoving = function()
+    firesignal(game.ReplicatedStorage.EntityInfo.Caption.OnClientEvent, 'I hear something, I need to hide.')
+end
+ 
+entityTable.Debug.OnEntityFinishedRebound = function()
+    print("Entity has finished rebound:", entityTable)
+end
+ 
+entityTable.Debug.OnEntityEnteredRoom = function(room)
+    print("Entity:", entityTable, "has entered room:", room)
+end
+ 
+entityTable.Debug.OnLookAtEntity = function()
+    print("Player has looked at entity:", entityTable)
+end
+ 
+entityTable.Debug.OnDeath = function()
+    warn("Player has died.")
+end
+------------------------------------
+ 
+ 
+-- Run the created entity
+Spawner.runEntity(entityTable)
